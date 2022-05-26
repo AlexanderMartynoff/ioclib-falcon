@@ -1,21 +1,24 @@
-from typing import Any, Optional, Tuple, Dict
+from typing import Any, Optional, Tuple, Dict, TypeVar
 from falcon import Request
 from ioclib.injector import Requirement, void
 
 
-def header(default=void):
+T = TypeVar('T')
+
+
+def header(default=void) -> Any:
     return Requirement(None, None, 'falcon/header', default)
 
 
-def parameter(default=void):
+def parameter(default=void) -> Any:
     return Requirement(None, None, 'falcon/parameter', default)
 
 
-def context(default=void):
+def context(default=void) -> Any:
     return Requirement(None, None, 'falcon/context', default)
 
 
-def falcon_request_injector(requirement: Requirement, args: Tuple[Any, ...], kwargs: Dict[str, Any]):
+def falcon_request_injector(requirement: Requirement[T], args: Tuple[Any, ...], kwargs: Dict[str, Any]):
     if not requirement.location.startswith('falcon'):
         raise LookupError()
 
