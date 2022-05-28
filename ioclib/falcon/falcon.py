@@ -25,19 +25,19 @@ def falcon_request_injector(requirement: Requirement[Any], args: Tuple[Any, ...]
         raise ValueError()
 
     if requirement.location == 'falcon/parameter':
-        if issubclass(requirement.type, str):
+        if str in requirement.types:
             return request.get_param(requirement.name, False)
 
-        if issubclass(requirement.type, int):
+        if int in requirement.types:
             return request.get_param_as_int(requirement.name, False)
 
-        if issubclass(requirement.type, float):
+        if float in requirement.types:
             return request.get_param_as_float(requirement.name, False)
 
-        if issubclass(requirement.type, list):
+        if list in requirement.types:
             return request.get_param_as_list(requirement.name, False)
 
-        if issubclass(requirement.type, dict):
+        if dict in requirement.types:
             return request.get_param_as_json(requirement.name, False)
 
         raise ValueError()

@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, Optional
 from falcon.testing import TestClient as Client
 from falcon import App, Request, Response
 from ioclib.falcon import falcon_request_injector, parameter, header, context
@@ -116,3 +116,34 @@ def test_parameter_with_injection():
     })
 
     assert result.text == '8'
+
+
+def test_optional_parameter():
+    injector = Injector([
+        falcon_request_injector,
+    ])
+
+    class Entity:
+        @injector.injectable
+        def on_get(self,
+                   request: Request,
+                   response: Response,
+                   optional: Optional[str] = parameter(None)):
+
+            response.text = str(optional)
+
+    app = App()
+
+    app.add_route('/optional', Entity())
+
+    client = Client(app)
+
+    result = client.simulate_get('/optional', params={
+        'optional': 'optional',
+    })
+
+    assert result.text == 'optional'
+
+    result = client.simulate_get('/optional')
+
+    assert result.text == 'None'
