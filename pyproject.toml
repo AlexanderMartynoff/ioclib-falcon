@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ioclib-falcon"
+version = "2.0"
+description = ""
+authors = ["Alexander Martynov <triplustri@mail.ru>"]
+readme = "README.md"
+packages = [
+    {include = "ioclib"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ioclib-injector = "^1.6"
+falcon = "^3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

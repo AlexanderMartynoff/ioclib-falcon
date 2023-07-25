@@ -1,7 +1,7 @@
 from typing import Iterator, Optional
 from falcon.testing import TestClient as Client
 from falcon import App, Request, Response
-from ioclib.falcon import falcon_request_injector, parameter, header, context
+from ioclib.falcon import falcon_request_injector, parameter, context
 from ioclib.injector import Injector, inject
 
 
@@ -25,7 +25,7 @@ def test_parameter():
         'value': 'value'
     })
 
-    assert result.text == 'value'
+    assert result.text == 'value'  # type: ignore
 
 
 def test_parameter_default_value():
@@ -46,7 +46,7 @@ def test_parameter_default_value():
 
     result = client.simulate_get('/entity')
 
-    assert result.text == 'default'
+    assert result.text == 'default'  # type: ignore
 
 
 def test_context():
@@ -76,7 +76,7 @@ def test_context():
 
     result = client.simulate_get('/entity')
 
-    assert result.text == 'value'
+    assert result.text == 'value'  # type: ignore
 
 
 def test_parameter_with_injection():
@@ -115,7 +115,7 @@ def test_parameter_with_injection():
         'power': 3,
     })
 
-    assert result.text == '8'
+    assert result.text == '8'  # type: ignore
 
 
 def test_optional_parameter():
@@ -142,8 +142,8 @@ def test_optional_parameter():
         'optional': 'optional',
     })
 
-    assert result.text == 'optional'
+    assert result.text == 'optional'  # type: ignore
 
     result = client.simulate_get('/optional')
 
-    assert result.text == 'None'
+    assert result.text == 'None'  # type: ignore

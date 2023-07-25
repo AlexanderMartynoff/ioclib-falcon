@@ -1,4 +1,4 @@
-from typing import Any, Tuple, Dict
+from typing import Any
 from falcon import Request
 from ioclib.injector import Requirement, void
 
@@ -12,16 +12,18 @@ def parameter(default=void) -> Any:
 
 
 def context(default=void) -> Any:
-    return Requirement[Any](None, None, 'falcon/context', default)
+    return Requirement[Any](None, Any, 'falcon/context', default)
 
 
-def falcon_request_injector(requirement: Requirement[Any], args: Tuple[Any, ...], kwargs: Dict[str, Any]) -> Any:
+def falcon_request_injector(requirement: Requirement[Any], args: tuple[Any, ...], kwargs: dict[str, Any]) -> Any:
     if not requirement.location.startswith('falcon'):
         raise LookupError()
 
-    try:
-        request = next(arg for arg in args if isinstance(arg, Request))
-    except StopIteration:
+    assert requirement.name
+
+    request = next((arg for arg in args if isinstance(arg, Request)), None)
+
+    if not request:
         raise ValueError()
 
     if requirement.location == 'falcon/parameter':
